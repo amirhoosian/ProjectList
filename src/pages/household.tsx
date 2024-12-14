@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { gql } from "graphql-tag";
+import { Pagination } from "../component/Pagination";
+import Header from "../component/Header";
 
 const GET_Household = gql`
   query GetHousehold($offset: Int!, $limit: Int!) {
@@ -28,27 +30,7 @@ const Household = () => {
   return (
     <div className="container p-4 mx-auto mt-10 rtl">
       {/* عنوان و دکمه ایجاد پروژه */}
-      <div className="flex items-center justify-between mb-6">
-        <button className="flex items-center px-4 py-2 text-blue-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-blue-50">
-          <span>ایجاد خانوار جدید</span>
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            className="w-5 h-5 ml-2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-        </button>
-        <h1 className="text-xl font-bold text-right">لیست خانوار ها</h1>
-      </div>
+      <Header onAdd={() => console.log("ایجاد خانوار جدید کلیک شد")} />
 
       {/* جدول پروژه‌ها */}
       <div className="overflow-hidden bg-white border border-gray-200 rounded-lg rounded-b">
@@ -134,61 +116,12 @@ const Household = () => {
       </div>
 
       {/* دکمه‌های صفحه‌بندی */}
-      <div className="flex items-center justify-between border border-gray-200 rounded-lg rounded-t">
-        <div className="flex items-center mt-4 mb-4">
-          <button
-            className="flex w-32 py-2 ml-6 text-gray-700 rounded tems-center f border-btn hover:bg-gray-300"
-            onClick={() => setPage((prev) => prev + 1)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-5 h-5 ml-2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            <span>صفحه بعد</span>
-          </button>
-          <button
-            className={`flex items-center px-4 py-2 rounded ${
-              page === 1
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-white text-gray-700 hover:bg-gray-300 border-btn"
-            } rounded`}
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-          >
-            <span>صفحه قبل</span>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-5 h-5 ml-2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <span className="text-gray-600">
-          صفحه {page} از {Math.ceil(100 / limit)}{" "}
-          {/* فرض شده 100 آیتم وجود دارد */}
-        </span>
-      </div>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        totalItems={100} // فرض شده
+        limit={limit}
+      />
     </div>
   );
 };
